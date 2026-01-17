@@ -37,22 +37,22 @@ public class ArticleController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, @RequestParam Long authorId) {
-        articles.delete(id, authorId);
+    public void delete(@PathVariable Long id) {
+        articles.delete(id);
     }
 
-    @PostMapping("/{id}/like")
-    public ArticleResponse like(@PathVariable Long id, @RequestParam Long userId) {
+    @PutMapping("/{id}/likes/{userId}")
+    public ArticleResponse like(@PathVariable Long id, @PathVariable Long userId) {
         return articles.like(id, userId);
     }
 
-    @PostMapping("/{id}/dislike")
-    public ArticleResponse dislike(@PathVariable Long id, @RequestParam Long userId) {
+    @PutMapping("/{id}/dislikes/{userId}")
+    public ArticleResponse dislike(@PathVariable Long id, @PathVariable Long userId) {
         return articles.dislike(id, userId);
     }
 
-    @PostMapping("/{id}/unreact")
-    public ArticleResponse unreact(@PathVariable Long id, @RequestParam Long userId) {
+    @DeleteMapping("/{id}/reactions/{userId}")
+    public ArticleResponse unreact(@PathVariable Long id, @PathVariable Long userId) {
         return articles.unreact(id, userId);
     }
 }

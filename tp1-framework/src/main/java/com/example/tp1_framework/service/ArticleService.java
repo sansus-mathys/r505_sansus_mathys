@@ -58,14 +58,8 @@ public class ArticleService {
         return toDto(article);
     }
 
-    public void delete(Long id, Long authorId) {
-        if (authorId == null) throw new BadRequestException("authorId is required");
+    public void delete(Long id) {
         Article article = getEntity(id);
-
-        if (!article.getAuthor().getId().equals(authorId)) {
-            throw new BadRequestException("Only the author can delete this article (authorId mismatch)");
-        }
-
         articles.delete(article);
     }
 

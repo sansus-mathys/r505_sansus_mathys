@@ -7,6 +7,7 @@ import com.example.tp1_framework.exception.NotFoundException;
 import com.example.tp1_framework.model.User;
 import com.example.tp1_framework.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -16,6 +17,18 @@ public class UserService {
     public UserService(UserRepository users) {
         this.users = users;
     }
+
+    public List<UserResponse> list() {
+        return users.findAll().stream()
+                .map(u -> new UserResponse(u.getId(), u.getUsername(), u.getRole()))
+                .toList();
+    }
+
+    public UserResponse get(Long id) {
+        User u = getEntityById(id);
+        return new UserResponse(u.getId(), u.getUsername(), u.getRole());
+    }
+
 
     public UserResponse create(UserCreateRequest req) {
         if (req.username() == null || req.username().isBlank()) {

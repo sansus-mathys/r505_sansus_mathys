@@ -5,6 +5,8 @@ import com.example.tp1_framework.dto.UserResponse;
 import com.example.tp1_framework.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -13,6 +15,16 @@ public class UserController {
 
     public UserController(UserService users) {
         this.users = users;
+    }
+
+    @GetMapping
+    public List<UserResponse> list() {
+        return users.list();
+    }
+
+    @GetMapping("/{id}")
+    public UserResponse get(@PathVariable Long id) {
+        return users.get(id);
     }
 
     @PostMapping
