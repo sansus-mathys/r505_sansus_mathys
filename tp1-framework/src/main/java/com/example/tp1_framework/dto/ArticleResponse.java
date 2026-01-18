@@ -8,8 +8,8 @@ public record ArticleResponse(
         String authorUsername,
         LocalDateTime publishedAt,
         String content,
-        int likeCount,
-        int dislikeCount,
+        Integer  likeCount,
+        Integer  dislikeCount,
         Set<String> likedBy,      // usernames
         Set<String> dislikedBy    // usernames
 ) {}

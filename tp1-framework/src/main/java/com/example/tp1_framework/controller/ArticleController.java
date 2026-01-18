@@ -2,6 +2,7 @@ package com.example.tp1_framework.controller;
 
 import com.example.tp1_framework.dto.*;
 import com.example.tp1_framework.service.ArticleService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,33 +27,39 @@ public class ArticleController {
         return articles.get(id);
     }
 
+    @PreAuthorize("hasRole('PUBLISHER')")
     @PostMapping
     public ArticleResponse create(@RequestBody ArticleCreateRequest req) {
         return articles.create(req);
     }
 
+    @PreAuthorize("hasRole('PUBLISHER')")
     @PutMapping("/{id}")
     public ArticleResponse update(@PathVariable Long id, @RequestBody ArticleUpdateRequest req) {
         return articles.update(id, req);
     }
 
+    @PreAuthorize("hasAnyRole('PUBLISHER','MODERATOR')")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         articles.delete(id);
     }
 
-    @PutMapping("/{id}/likes/{userId}")
-    public ArticleResponse like(@PathVariable Long id, @PathVariable Long userId) {
-        return articles.like(id, userId);
+    @PreAuthorize("hasRole('PUBLISHER')")
+    @PutMapping("/{id}/likes")
+    public ArticleResponse like(@PathVariable Long id) {
+        return articles.like(id);
     }
 
-    @PutMapping("/{id}/dislikes/{userId}")
-    public ArticleResponse dislike(@PathVariable Long id, @PathVariable Long userId) {
-        return articles.dislike(id, userId);
+    @PreAuthorize("hasRole('PUBLISHER')")
+    @PutMapping("/{id}/dislikes")
+    public ArticleResponse dislike(@PathVariable Long id) {
+        return articles.dislike(id);
     }
 
-    @DeleteMapping("/{id}/reactions/{userId}")
-    public ArticleResponse unreact(@PathVariable Long id, @PathVariable Long userId) {
-        return articles.unreact(id, userId);
+    @PreAuthorize("hasRole('PUBLISHER')")
+    @DeleteMapping("/{id}/reactions")
+    public ArticleResponse unreact(@PathVariable Long id) {
+        return articles.unreact(id);
     }
 }

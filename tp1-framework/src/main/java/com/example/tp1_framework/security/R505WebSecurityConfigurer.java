@@ -29,11 +29,12 @@ public class R505WebSecurityConfigurer {
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/articles/**").permitAll()
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
-                );
+                );;
 
         http.authenticationProvider(provider);
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
