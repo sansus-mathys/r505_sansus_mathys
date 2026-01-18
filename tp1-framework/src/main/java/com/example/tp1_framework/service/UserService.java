@@ -6,6 +6,7 @@ import com.example.tp1_framework.exception.BadRequestException;
 import com.example.tp1_framework.exception.NotFoundException;
 import com.example.tp1_framework.model.User;
 import com.example.tp1_framework.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -13,9 +14,11 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository users;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository users) {
+    public UserService(UserRepository users, PasswordEncoder passwordEncoder) {
         this.users = users;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<UserResponse> list() {
@@ -44,7 +47,7 @@ public class UserService {
             throw new BadRequestException("username already exists");
         });
 
-        User saved = users.save(new User(req.username(), req.password(), req.role()));
+        User saved = users.save(new User(req.username(), passwordEncoder.encode(req.password()), req.role()));
         return new UserResponse(saved.getId(), saved.getUsername(), saved.getRole());
     }
 
